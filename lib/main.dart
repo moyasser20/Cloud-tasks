@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 
-// Handling background messages
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -64,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _setupFCM() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // Request notification permissions (iOS)
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       badge: true,
@@ -74,14 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     print('User granted permission: ${settings.authorizationStatus}');
 
-    // Get the FCM token
     String? token = await messaging.getToken();
     setState(() {
       _fcmToken = token;
     });
     print('FCM Token: $token');
 
-    // Listen for token refresh
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
       setState(() {
         _fcmToken = newToken;
@@ -89,12 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
       print('Updated FCM Token: $newToken');
     });
 
-    // Listen for foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Foreground message received: ${message.notification?.title} - ${message.notification?.body}');
 
       if (message.notification != null) {
-        // Show message on screen
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
