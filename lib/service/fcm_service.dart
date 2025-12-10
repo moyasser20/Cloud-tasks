@@ -31,7 +31,7 @@ class FCMService {
       NotificationService.showNotification(message);
     });
 
-    // Background message (optional)
+    // Background message )
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     return token;
